@@ -295,6 +295,11 @@ const DecorativeBackground = () => {
 
       {/* Floating decorative elements with parallax */}
       {floatingElements.map((el, i) => {
+        // Eyes get special blinking treatment
+        if (el.Component === EyeIcon) {
+          return <BlinkingEye key={i} element={el} index={i} />;
+        }
+
         const parallaxX = useTransform(springX, [-1, 1], [-20 * el.depth, 20 * el.depth]);
         const parallaxY = useTransform(springY, [-1, 1], [-15 * el.depth, 15 * el.depth]);
 
