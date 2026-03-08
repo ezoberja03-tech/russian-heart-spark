@@ -218,13 +218,17 @@ const floatingElements: FloatingElement[] = [
   { Component: CrescentIcon,baseX: 18, baseY: 82, size: "w-12 h-12", color: "text-gold-light", delay: 2.3, depth: 0.8, rotateRange: 8,  durationFloat: 7 },
 ];
 
+// Define springs at module level for use in BlinkingEye
+let springX: any;
+let springY: any;
+
 const DecorativeBackground = () => {
   const [particles] = useState(() => generateParticles(35));
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
-  const springX = useSpring(mouseX, { stiffness: 40, damping: 25 });
-  const springY = useSpring(mouseY, { stiffness: 40, damping: 25 });
+  springX = useSpring(mouseX, { stiffness: 40, damping: 25 });
+  springY = useSpring(mouseY, { stiffness: 40, damping: 25 });
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
