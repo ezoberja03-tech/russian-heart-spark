@@ -2,15 +2,62 @@ import { motion, useMotionValue, useTransform, useSpring } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 
 // SVG Elements
-const EyeIcon = ({ className }: { className?: string }) => (
+const EyeIcon = ({ className, isBlinking = false }: { className?: string; isBlinking?: boolean }) => (
   <svg viewBox="0 0 80 50" fill="none" className={className}>
+    {/* Eye shape with watercolor effect */}
+    <defs>
+      <radialGradient id="irisGradient" cx="0.3" cy="0.3">
+        <stop offset="0%" stopColor="currentColor" stopOpacity="0.15" />
+        <stop offset="50%" stopColor="currentColor" stopOpacity="0.25" />
+        <stop offset="100%" stopColor="currentColor" stopOpacity="0.35" />
+      </radialGradient>
+      <radialGradient id="pupilGradient" cx="0.4" cy="0.4">
+        <stop offset="0%" stopColor="currentColor" stopOpacity="0.5" />
+        <stop offset="100%" stopColor="currentColor" stopOpacity="0.7" />
+      </radialGradient>
+    </defs>
+    
+    {/* Soft shadow beneath eye */}
+    <ellipse cx="40" cy="27" rx="32" ry="3" fill="currentColor" opacity="0.08" />
+    
+    {/* Eye white with subtle watercolor edge */}
     <path
       d="M40 5C20 5 5 25 5 25s15 20 35 20 35-20 35-20S60 5 40 5z"
-      stroke="currentColor" strokeWidth="1.5" fill="none" opacity="0.4"
+      stroke="currentColor" strokeWidth="1.8" fill="white" fillOpacity="0.85" opacity="0.75"
     />
-    <circle cx="40" cy="25" r="10" stroke="currentColor" strokeWidth="1.5" fill="none" opacity="0.3" />
-    <circle cx="40" cy="25" r="4" fill="currentColor" opacity="0.2" />
-    <circle cx="37" cy="22" r="1.5" fill="currentColor" opacity="0.4" />
+    
+    {/* Iris with gradient */}
+    <circle cx="40" cy="25" r="11" fill="url(#irisGradient)" opacity={isBlinking ? 0 : 1} />
+    <circle cx="40" cy="25" r="11" stroke="currentColor" strokeWidth="1.2" fill="none" opacity={isBlinking ? 0 : 0.5} />
+    
+    {/* Pupil */}
+    <circle cx="40" cy="25" r="5" fill="url(#pupilGradient)" opacity={isBlinking ? 0 : 1} />
+    
+    {/* Light reflection highlights */}
+    <circle cx="36" cy="21" r="2.5" fill="white" opacity={isBlinking ? 0 : 0.9} />
+    <circle cx="43" cy="23" r="1.2" fill="white" opacity={isBlinking ? 0 : 0.6} />
+    
+    {/* Upper eyelashes */}
+    <path d="M15 15 Q 18 8, 21 15" stroke="currentColor" strokeWidth="1.2" opacity="0.6" strokeLinecap="round" fill="none" />
+    <path d="M25 8 Q 27 2, 29 8" stroke="currentColor" strokeWidth="1.2" opacity="0.6" strokeLinecap="round" fill="none" />
+    <path d="M35 5 Q 38 -1, 41 5" stroke="currentColor" strokeWidth="1.3" opacity="0.65" strokeLinecap="round" fill="none" />
+    <path d="M45 5 Q 48 -1, 51 5" stroke="currentColor" strokeWidth="1.2" opacity="0.6" strokeLinecap="round" fill="none" />
+    <path d="M55 8 Q 57 2, 59 8" stroke="currentColor" strokeWidth="1.2" opacity="0.6" strokeLinecap="round" fill="none" />
+    <path d="M63 15 Q 66 8, 69 15" stroke="currentColor" strokeWidth="1.1" opacity="0.55" strokeLinecap="round" fill="none" />
+    
+    {/* Lower eyelashes */}
+    <path d="M18 35 Q 20 40, 22 35" stroke="currentColor" strokeWidth="0.9" opacity="0.4" strokeLinecap="round" fill="none" />
+    <path d="M30 42 Q 32 47, 34 42" stroke="currentColor" strokeWidth="0.9" opacity="0.4" strokeLinecap="round" fill="none" />
+    <path d="M46 42 Q 48 47, 50 42" stroke="currentColor" strokeWidth="0.9" opacity="0.4" strokeLinecap="round" fill="none" />
+    <path d="M58 35 Q 60 40, 62 35" stroke="currentColor" strokeWidth="0.9" opacity="0.4" strokeLinecap="round" fill="none" />
+    
+    {/* Blinking eyelid - closes when isBlinking is true */}
+    {isBlinking && (
+      <path
+        d="M40 5C20 5 5 25 5 25s15 20 35 20 35-20 35-20S60 5 40 5z"
+        fill="currentColor" fillOpacity="0.7" stroke="currentColor" strokeWidth="1.5"
+      />
+    )}
   </svg>
 );
 
@@ -101,6 +148,53 @@ interface FloatingElement {
   durationFloat: number;
 }
 
+// Blinking Eye wrapper component
+const BlinkingEye = ({ element, index }: { element: FloatingElement; index: number }) => {
+  const [isBlinking, setIsBlinking] = useState(false);
+  const blinkIntervalRef = useRef<NodeJS.Timeout | null>(null);
+
+  useEffect(() => {
+    const startBlinking = () => {
+      const randomDelay = 3000 + Math.random() * 4000; // Random delay between 3-7 seconds
+      blinkIntervalRef.current = setTimeout(() => {
+        setIsBlinking(true);
+        setTimeout(() => setIsBlinking(false), 150); // Blink duration 150ms
+        startBlinking(); // Schedule next blink
+      }, randomDelay);
+    };
+    
+    startBlinking();
+    return () => {
+      if (blinkIntervalRef.current) clearTimeout(blinkIntervalRef.current);
+    };
+  }, []);
+
+  const parallaxX = useTransform(springX, [-1, 1], [-20 * element.depth, 20 * element.depth]);
+  const parallaxY = useTransform(springY, [-1, 1], [-15 * element.depth, 15 * element.depth]);
+
+  return (
+    <motion.div
+      className={`absolute ${element.size} ${element.color}`}
+      style={{ left: `${element.baseX}%`, top: `${element.baseY}%`, x: parallaxX, y: parallaxY }}
+      initial={{ opacity: 0, scale: 0.3 }}
+      animate={{
+        opacity: [0, 0.85, 0.7, 0.9, 0.75],
+        scale: [0.3, 1, 0.95, 1.05, 1],
+        rotate: [-element.rotateRange / 2, element.rotateRange / 2, -element.rotateRange / 3, element.rotateRange / 4, 0],
+        y: [0, -12, 0, -8, 0],
+      }}
+      transition={{
+        opacity: { duration: 1.5, delay: element.delay },
+        scale:   { duration: 1.5, delay: element.delay },
+        rotate:  { duration: element.durationFloat, delay: element.delay, repeat: Infinity, ease: "easeInOut" },
+        y:       { duration: element.durationFloat, delay: element.delay, repeat: Infinity, ease: "easeInOut" },
+      }}
+    >
+      <EyeIcon className="w-full h-full" isBlinking={isBlinking} />
+    </motion.div>
+  );
+};
+
 const floatingElements: FloatingElement[] = [
   { Component: EyeIcon,     baseX: 5,  baseY: 8,  size: "w-20 h-12", color: "text-mint",       delay: 0,   depth: 0.8, rotateRange: 8,  durationFloat: 7 },
   { Component: EyeIcon,     baseX: 78, baseY: 12, size: "w-16 h-10", color: "text-olive",      delay: 1.2, depth: 0.5, rotateRange: 6,  durationFloat: 9 },
@@ -124,13 +218,17 @@ const floatingElements: FloatingElement[] = [
   { Component: CrescentIcon,baseX: 18, baseY: 82, size: "w-12 h-12", color: "text-gold-light", delay: 2.3, depth: 0.8, rotateRange: 8,  durationFloat: 7 },
 ];
 
+// Define springs at module level for use in BlinkingEye
+let springX: any;
+let springY: any;
+
 const DecorativeBackground = () => {
   const [particles] = useState(() => generateParticles(35));
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
-  const springX = useSpring(mouseX, { stiffness: 40, damping: 25 });
-  const springY = useSpring(mouseY, { stiffness: 40, damping: 25 });
+  springX = useSpring(mouseX, { stiffness: 40, damping: 25 });
+  springY = useSpring(mouseY, { stiffness: 40, damping: 25 });
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -197,6 +295,11 @@ const DecorativeBackground = () => {
 
       {/* Floating decorative elements with parallax */}
       {floatingElements.map((el, i) => {
+        // Eyes get special blinking treatment
+        if (el.Component === EyeIcon) {
+          return <BlinkingEye key={i} element={el} index={i} />;
+        }
+
         const parallaxX = useTransform(springX, [-1, 1], [-20 * el.depth, 20 * el.depth]);
         const parallaxY = useTransform(springY, [-1, 1], [-15 * el.depth, 15 * el.depth]);
 
