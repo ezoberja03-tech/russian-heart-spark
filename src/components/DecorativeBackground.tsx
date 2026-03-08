@@ -2,15 +2,62 @@ import { motion, useMotionValue, useTransform, useSpring } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 
 // SVG Elements
-const EyeIcon = ({ className }: { className?: string }) => (
+const EyeIcon = ({ className, isBlinking = false }: { className?: string; isBlinking?: boolean }) => (
   <svg viewBox="0 0 80 50" fill="none" className={className}>
+    {/* Eye shape with watercolor effect */}
+    <defs>
+      <radialGradient id="irisGradient" cx="0.3" cy="0.3">
+        <stop offset="0%" stopColor="currentColor" stopOpacity="0.15" />
+        <stop offset="50%" stopColor="currentColor" stopOpacity="0.25" />
+        <stop offset="100%" stopColor="currentColor" stopOpacity="0.35" />
+      </radialGradient>
+      <radialGradient id="pupilGradient" cx="0.4" cy="0.4">
+        <stop offset="0%" stopColor="currentColor" stopOpacity="0.5" />
+        <stop offset="100%" stopColor="currentColor" stopOpacity="0.7" />
+      </radialGradient>
+    </defs>
+    
+    {/* Soft shadow beneath eye */}
+    <ellipse cx="40" cy="27" rx="32" ry="3" fill="currentColor" opacity="0.08" />
+    
+    {/* Eye white with subtle watercolor edge */}
     <path
       d="M40 5C20 5 5 25 5 25s15 20 35 20 35-20 35-20S60 5 40 5z"
-      stroke="currentColor" strokeWidth="1.5" fill="none" opacity="0.4"
+      stroke="currentColor" strokeWidth="1.8" fill="white" fillOpacity="0.85" opacity="0.75"
     />
-    <circle cx="40" cy="25" r="10" stroke="currentColor" strokeWidth="1.5" fill="none" opacity="0.3" />
-    <circle cx="40" cy="25" r="4" fill="currentColor" opacity="0.2" />
-    <circle cx="37" cy="22" r="1.5" fill="currentColor" opacity="0.4" />
+    
+    {/* Iris with gradient */}
+    <circle cx="40" cy="25" r="11" fill="url(#irisGradient)" opacity={isBlinking ? 0 : 1} />
+    <circle cx="40" cy="25" r="11" stroke="currentColor" strokeWidth="1.2" fill="none" opacity={isBlinking ? 0 : 0.5} />
+    
+    {/* Pupil */}
+    <circle cx="40" cy="25" r="5" fill="url(#pupilGradient)" opacity={isBlinking ? 0 : 1} />
+    
+    {/* Light reflection highlights */}
+    <circle cx="36" cy="21" r="2.5" fill="white" opacity={isBlinking ? 0 : 0.9} />
+    <circle cx="43" cy="23" r="1.2" fill="white" opacity={isBlinking ? 0 : 0.6} />
+    
+    {/* Upper eyelashes */}
+    <path d="M15 15 Q 18 8, 21 15" stroke="currentColor" strokeWidth="1.2" opacity="0.6" strokeLinecap="round" fill="none" />
+    <path d="M25 8 Q 27 2, 29 8" stroke="currentColor" strokeWidth="1.2" opacity="0.6" strokeLinecap="round" fill="none" />
+    <path d="M35 5 Q 38 -1, 41 5" stroke="currentColor" strokeWidth="1.3" opacity="0.65" strokeLinecap="round" fill="none" />
+    <path d="M45 5 Q 48 -1, 51 5" stroke="currentColor" strokeWidth="1.2" opacity="0.6" strokeLinecap="round" fill="none" />
+    <path d="M55 8 Q 57 2, 59 8" stroke="currentColor" strokeWidth="1.2" opacity="0.6" strokeLinecap="round" fill="none" />
+    <path d="M63 15 Q 66 8, 69 15" stroke="currentColor" strokeWidth="1.1" opacity="0.55" strokeLinecap="round" fill="none" />
+    
+    {/* Lower eyelashes */}
+    <path d="M18 35 Q 20 40, 22 35" stroke="currentColor" strokeWidth="0.9" opacity="0.4" strokeLinecap="round" fill="none" />
+    <path d="M30 42 Q 32 47, 34 42" stroke="currentColor" strokeWidth="0.9" opacity="0.4" strokeLinecap="round" fill="none" />
+    <path d="M46 42 Q 48 47, 50 42" stroke="currentColor" strokeWidth="0.9" opacity="0.4" strokeLinecap="round" fill="none" />
+    <path d="M58 35 Q 60 40, 62 35" stroke="currentColor" strokeWidth="0.9" opacity="0.4" strokeLinecap="round" fill="none" />
+    
+    {/* Blinking eyelid - closes when isBlinking is true */}
+    {isBlinking && (
+      <path
+        d="M40 5C20 5 5 25 5 25s15 20 35 20 35-20 35-20S60 5 40 5z"
+        fill="currentColor" fillOpacity="0.7" stroke="currentColor" strokeWidth="1.5"
+      />
+    )}
   </svg>
 );
 
