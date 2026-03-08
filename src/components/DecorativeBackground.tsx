@@ -407,7 +407,7 @@ const BlinkingEye = ({ element, index }: { element: FloatingElement; index: numb
         y:       { duration: element.durationFloat, delay: element.delay, repeat: Infinity, ease: "easeInOut" },
       }}
     >
-      <EyeIcon className="w-full h-full" isBlinking={isBlinking} />
+      <EyeIcon className="w-full h-full" isBlinking={isBlinking} id={`eye-${index}`} />
     </motion.div>
   );
 };
