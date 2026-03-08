@@ -2,61 +2,278 @@ import { motion, useMotionValue, useTransform, useSpring } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 
 // SVG Elements
-const EyeIcon = ({ className, isBlinking = false }: { className?: string; isBlinking?: boolean }) => (
-  <svg viewBox="0 0 80 50" fill="none" className={className}>
-    {/* Eye shape with watercolor effect */}
+const EyeIcon = ({ className, isBlinking = false, id = "eye" }: { className?: string; isBlinking?: boolean; id?: string }) => (
+  <svg viewBox="0 0 200 130" fill="none" className={className}>
     <defs>
-      <radialGradient id="irisGradient" cx="0.3" cy="0.3">
-        <stop offset="0%" stopColor="currentColor" stopOpacity="0.15" />
-        <stop offset="50%" stopColor="currentColor" stopOpacity="0.25" />
-        <stop offset="100%" stopColor="currentColor" stopOpacity="0.35" />
+      {/* Watercolor texture filter */}
+      <filter id={`${id}-watercolor`} x="-20%" y="-20%" width="140%" height="140%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="4" seed="2" result="noise" />
+        <feDisplacementMap in="SourceGraphic" in2="noise" scale="3" xChannelSelector="R" yChannelSelector="G" />
+      </filter>
+      <filter id={`${id}-softEdge`} x="-10%" y="-10%" width="120%" height="120%">
+        <feGaussianBlur stdDeviation="0.8" />
+      </filter>
+      <filter id={`${id}-glow`} x="-50%" y="-50%" width="200%" height="200%">
+        <feGaussianBlur stdDeviation="2.5" result="blur" />
+        <feComposite in="SourceGraphic" in2="blur" operator="over" />
+      </filter>
+      <filter id={`${id}-paintEdge`} x="-5%" y="-5%" width="110%" height="110%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.08" numOctaves="3" seed="5" result="noise" />
+        <feDisplacementMap in="SourceGraphic" in2="noise" scale="1.5" />
+      </filter>
+
+      {/* Iris complex gradient - warm brown/amber tones */}
+      <radialGradient id={`${id}-irisOuter`} cx="0.45" cy="0.42">
+        <stop offset="0%" stopColor="#8B6914" stopOpacity="0.7" />
+        <stop offset="35%" stopColor="#6B4E12" stopOpacity="0.6" />
+        <stop offset="65%" stopColor="#4A3510" stopOpacity="0.55" />
+        <stop offset="85%" stopColor="#3A2A0E" stopOpacity="0.65" />
+        <stop offset="100%" stopColor="#2A1F0A" stopOpacity="0.75" />
       </radialGradient>
-      <radialGradient id="pupilGradient" cx="0.4" cy="0.4">
-        <stop offset="0%" stopColor="currentColor" stopOpacity="0.5" />
-        <stop offset="100%" stopColor="currentColor" stopOpacity="0.7" />
+      <radialGradient id={`${id}-irisInner`} cx="0.5" cy="0.45">
+        <stop offset="0%" stopColor="#C4944A" stopOpacity="0.5" />
+        <stop offset="40%" stopColor="#A07830" stopOpacity="0.45" />
+        <stop offset="100%" stopColor="#705520" stopOpacity="0.3" />
       </radialGradient>
+      <radialGradient id={`${id}-irisHighlight`} cx="0.35" cy="0.35">
+        <stop offset="0%" stopColor="#D4A855" stopOpacity="0.4" />
+        <stop offset="100%" stopColor="#8B6914" stopOpacity="0" />
+      </radialGradient>
+      <radialGradient id={`${id}-pupilGrad`} cx="0.42" cy="0.38">
+        <stop offset="0%" stopColor="#1a1008" stopOpacity="0.85" />
+        <stop offset="60%" stopColor="#0f0a04" stopOpacity="0.92" />
+        <stop offset="100%" stopColor="#050302" stopOpacity="0.95" />
+      </radialGradient>
+
+      {/* Sclera (white of eye) gradient */}
+      <radialGradient id={`${id}-scleraGrad`} cx="0.5" cy="0.5">
+        <stop offset="0%" stopColor="#FDFAF5" stopOpacity="0.95" />
+        <stop offset="60%" stopColor="#F5EDE0" stopOpacity="0.9" />
+        <stop offset="100%" stopColor="#E8D8C4" stopOpacity="0.85" />
+      </radialGradient>
+
+      {/* Blood vessel tint in corners */}
+      <radialGradient id={`${id}-pinkCornerL`} cx="0.2" cy="0.5">
+        <stop offset="0%" stopColor="#D4918A" stopOpacity="0.2" />
+        <stop offset="100%" stopColor="#D4918A" stopOpacity="0" />
+      </radialGradient>
+      <radialGradient id={`${id}-pinkCornerR`} cx="0.85" cy="0.5">
+        <stop offset="0%" stopColor="#C88A82" stopOpacity="0.15" />
+        <stop offset="100%" stopColor="#C88A82" stopOpacity="0" />
+      </radialGradient>
+
+      {/* Skin tone for eyelid */}
+      <linearGradient id={`${id}-skinGrad`} x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stopColor="#E8CCAB" stopOpacity="0.6" />
+        <stop offset="100%" stopColor="#D4B896" stopOpacity="0.75" />
+      </linearGradient>
+      <linearGradient id={`${id}-lidShadow`} x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stopColor="#B89878" stopOpacity="0.35" />
+        <stop offset="100%" stopColor="#B89878" stopOpacity="0" />
+      </linearGradient>
+
+      <clipPath id={`${id}-eyeClip`}>
+        <path d="M100 28C60 28 18 65 18 65s42 37 82 37 82-37 82-37S140 28 100 28z" />
+      </clipPath>
     </defs>
-    
-    {/* Soft shadow beneath eye */}
-    <ellipse cx="40" cy="27" rx="32" ry="3" fill="currentColor" opacity="0.08" />
-    
-    {/* Eye white with subtle watercolor edge */}
+
+    {/* Subtle soft shadow beneath the eye */}
+    <ellipse cx="100" cy="108" rx="65" ry="8" fill="#8B7355" opacity="0.06" filter={`url(#${id}-softEdge)`} />
+
+    {/* Upper eyelid skin area */}
     <path
-      d="M40 5C20 5 5 25 5 25s15 20 35 20 35-20 35-20S60 5 40 5z"
-      stroke="currentColor" strokeWidth="1.8" fill="white" fillOpacity="0.85" opacity="0.75"
+      d="M100 20C55 20 12 60 12 60 C12 60 35 30 100 25 C165 30 188 60 188 60 C188 60 145 20 100 20z"
+      fill={`url(#${id}-skinGrad)`} filter={`url(#${id}-paintEdge)`}
     />
-    
-    {/* Iris with gradient */}
-    <circle cx="40" cy="25" r="11" fill="url(#irisGradient)" opacity={isBlinking ? 0 : 1} />
-    <circle cx="40" cy="25" r="11" stroke="currentColor" strokeWidth="1.2" fill="none" opacity={isBlinking ? 0 : 0.5} />
-    
-    {/* Pupil */}
-    <circle cx="40" cy="25" r="5" fill="url(#pupilGradient)" opacity={isBlinking ? 0 : 1} />
-    
-    {/* Light reflection highlights */}
-    <circle cx="36" cy="21" r="2.5" fill="white" opacity={isBlinking ? 0 : 0.9} />
-    <circle cx="43" cy="23" r="1.2" fill="white" opacity={isBlinking ? 0 : 0.6} />
-    
-    {/* Upper eyelashes */}
-    <path d="M15 15 Q 18 8, 21 15" stroke="currentColor" strokeWidth="1.2" opacity="0.6" strokeLinecap="round" fill="none" />
-    <path d="M25 8 Q 27 2, 29 8" stroke="currentColor" strokeWidth="1.2" opacity="0.6" strokeLinecap="round" fill="none" />
-    <path d="M35 5 Q 38 -1, 41 5" stroke="currentColor" strokeWidth="1.3" opacity="0.65" strokeLinecap="round" fill="none" />
-    <path d="M45 5 Q 48 -1, 51 5" stroke="currentColor" strokeWidth="1.2" opacity="0.6" strokeLinecap="round" fill="none" />
-    <path d="M55 8 Q 57 2, 59 8" stroke="currentColor" strokeWidth="1.2" opacity="0.6" strokeLinecap="round" fill="none" />
-    <path d="M63 15 Q 66 8, 69 15" stroke="currentColor" strokeWidth="1.1" opacity="0.55" strokeLinecap="round" fill="none" />
-    
-    {/* Lower eyelashes */}
-    <path d="M18 35 Q 20 40, 22 35" stroke="currentColor" strokeWidth="0.9" opacity="0.4" strokeLinecap="round" fill="none" />
-    <path d="M30 42 Q 32 47, 34 42" stroke="currentColor" strokeWidth="0.9" opacity="0.4" strokeLinecap="round" fill="none" />
-    <path d="M46 42 Q 48 47, 50 42" stroke="currentColor" strokeWidth="0.9" opacity="0.4" strokeLinecap="round" fill="none" />
-    <path d="M58 35 Q 60 40, 62 35" stroke="currentColor" strokeWidth="0.9" opacity="0.4" strokeLinecap="round" fill="none" />
-    
-    {/* Blinking eyelid - closes when isBlinking is true */}
-    {isBlinking && (
+    {/* Eyelid crease */}
+    <path
+      d="M32 40 Q65 22 100 20 Q135 22 168 40"
+      stroke="#A08060" strokeWidth="0.7" fill="none" opacity="0.25" strokeLinecap="round"
+      filter={`url(#${id}-paintEdge)`}
+    />
+    {/* Lid shadow on eye */}
+    <path
+      d="M100 28C60 28 18 65 18 65 C40 50 70 38 100 36 C130 38 160 50 182 65 C182 65 140 28 100 28z"
+      fill={`url(#${id}-lidShadow)`}
+    />
+
+    {/* ===== EYE CONTENTS (clipped) ===== */}
+    <g clipPath={`url(#${id}-eyeClip)`} opacity={isBlinking ? 0 : 1}>
+      {/* Sclera base */}
+      <ellipse cx="100" cy="65" rx="82" ry="37" fill={`url(#${id}-scleraGrad)`} />
+      
+      {/* Subtle blood vessels */}
+      <path d="M25 60 Q40 58 55 62" stroke="#C8908A" strokeWidth="0.3" opacity="0.2" fill="none" />
+      <path d="M28 67 Q42 63 52 66" stroke="#C8908A" strokeWidth="0.25" opacity="0.15" fill="none" />
+      <path d="M145 60 Q160 57 172 62" stroke="#C8908A" strokeWidth="0.3" opacity="0.18" fill="none" />
+      <path d="M150 68 Q162 65 170 67" stroke="#C8908A" strokeWidth="0.25" opacity="0.12" fill="none" />
+
+      {/* Pinkish inner corner (caruncle) */}
+      <ellipse cx="24" cy="65" rx="10" ry="8" fill={`url(#${id}-pinkCornerL)`} />
+      <path d="M18 65 Q22 60 28 63 Q24 68 18 65z" fill="#D4918A" opacity="0.18" />
+
+      {/* Pink outer corner tint */}
+      <ellipse cx="178" cy="65" rx="8" ry="6" fill={`url(#${id}-pinkCornerR)`} />
+
+      {/* ===== IRIS ===== */}
+      <g filter={`url(#${id}-watercolor)`}>
+        {/* Iris outer ring */}
+        <circle cx="100" cy="65" r="22" fill={`url(#${id}-irisOuter)`} />
+        
+        {/* Iris inner texture layer */}
+        <circle cx="100" cy="65" r="20" fill={`url(#${id}-irisInner)`} />
+        
+        {/* Iris highlight zone */}
+        <circle cx="100" cy="65" r="18" fill={`url(#${id}-irisHighlight)`} />
+
+        {/* Iris radial fibers - collarette pattern */}
+        {Array.from({ length: 36 }, (_, i) => {
+          const angle = (i * 10) * Math.PI / 180;
+          const innerR = 8;
+          const outerR = 20 + (i % 3) * 1.5;
+          const x1 = 100 + Math.cos(angle) * innerR;
+          const y1 = 65 + Math.sin(angle) * innerR;
+          const x2 = 100 + Math.cos(angle) * outerR;
+          const y2 = 65 + Math.sin(angle) * outerR;
+          const wobble = Math.sin(i * 1.7) * 2;
+          const mx = 100 + Math.cos(angle) * (innerR + outerR) / 2 + wobble;
+          const my = 65 + Math.sin(angle) * (innerR + outerR) / 2 + wobble;
+          return (
+            <path
+              key={i}
+              d={`M${x1} ${y1} Q${mx} ${my} ${x2} ${y2}`}
+              stroke={i % 4 === 0 ? "#C4944A" : i % 3 === 0 ? "#8B6914" : "#6B4E12"}
+              strokeWidth={0.3 + (i % 3) * 0.15}
+              opacity={0.2 + (i % 5) * 0.06}
+              fill="none"
+              strokeLinecap="round"
+            />
+          );
+        })}
+
+        {/* Iris ring / collarette border */}
+        <circle cx="100" cy="65" r="14" stroke="#705520" strokeWidth="0.5" fill="none" opacity="0.3" />
+        
+        {/* Iris outer dark limbal ring */}
+        <circle cx="100" cy="65" r="22" stroke="#2A1F0A" strokeWidth="1.2" fill="none" opacity="0.45" />
+        <circle cx="100" cy="65" r="21.5" stroke="#3A2A0E" strokeWidth="0.6" fill="none" opacity="0.25" />
+      </g>
+
+      {/* ===== PUPIL ===== */}
+      <circle cx="100" cy="65" r="8" fill={`url(#${id}-pupilGrad)`} />
+      {/* Pupil edge softness */}
+      <circle cx="100" cy="65" r="8.5" stroke="#1a1008" strokeWidth="0.8" fill="none" opacity="0.3" filter={`url(#${id}-softEdge)`} />
+
+      {/* ===== CATCHLIGHTS / REFLECTIONS ===== */}
+      {/* Main large catchlight */}
+      <ellipse cx="93" cy="56" rx="5" ry="4.5" fill="white" opacity="0.92" filter={`url(#${id}-glow)`} />
+      {/* Secondary smaller catchlight */}
+      <ellipse cx="108" cy="72" rx="2.5" ry="2" fill="white" opacity="0.55" />
+      {/* Tiny sparkle highlights */}
+      <circle cx="90" cy="58" r="1" fill="white" opacity="0.8" />
+      <circle cx="110" cy="60" r="0.7" fill="white" opacity="0.4" />
+      
+      {/* Reflection arc on iris (window reflection) */}
       <path
-        d="M40 5C20 5 5 25 5 25s15 20 35 20 35-20 35-20S60 5 40 5z"
-        fill="currentColor" fillOpacity="0.7" stroke="currentColor" strokeWidth="1.5"
+        d="M88 52 Q95 48 102 52"
+        stroke="white" strokeWidth="1" fill="none" opacity="0.2" strokeLinecap="round"
       />
+
+      {/* Subtle iris color reflection in catchlight */}
+      <ellipse cx="94" cy="57" rx="3" ry="2.5" fill="#D4A855" opacity="0.08" />
+    </g>
+
+    {/* Eye outline - almond shape with watercolor edge */}
+    <path
+      d="M100 28C60 28 18 65 18 65s42 37 82 37 82-37 82-37S140 28 100 28z"
+      stroke="#6B5840" strokeWidth="1.2" fill="none" opacity="0.5"
+      filter={`url(#${id}-paintEdge)`}
+    />
+    {/* Inner eye line (waterline) */}
+    <path
+      d="M100 32C65 32 25 65 25 65s38 32 75 32 75-32 75-32S135 32 100 32z"
+      stroke="#A08870" strokeWidth="0.4" fill="none" opacity="0.2"
+    />
+
+    {/* ===== UPPER EYELASHES ===== */}
+    <g opacity="0.7" filter={`url(#${id}-paintEdge)`}>
+      {/* Long center lashes */}
+      <path d="M80 34 Q78 18 74 12" stroke="#3A2A15" strokeWidth="1.1" fill="none" strokeLinecap="round" />
+      <path d="M88 30 Q85 14 82 8" stroke="#3A2A15" strokeWidth="1.2" fill="none" strokeLinecap="round" />
+      <path d="M96 28 Q94 10 92 4" stroke="#3A2A15" strokeWidth="1.3" fill="none" strokeLinecap="round" />
+      <path d="M104 28 Q105 10 107 4" stroke="#3A2A15" strokeWidth="1.3" fill="none" strokeLinecap="round" />
+      <path d="M112 30 Q114 14 117 8" stroke="#3A2A15" strokeWidth="1.2" fill="none" strokeLinecap="round" />
+      <path d="M120 34 Q123 18 127 12" stroke="#3A2A15" strokeWidth="1.1" fill="none" strokeLinecap="round" />
+      
+      {/* Medium lashes */}
+      <path d="M72 38 Q68 24 64 18" stroke="#4A3820" strokeWidth="0.9" fill="none" strokeLinecap="round" />
+      <path d="M84 32 Q81 20 78 15" stroke="#4A3820" strokeWidth="1.0" fill="none" strokeLinecap="round" />
+      <path d="M92 29 Q90 16 88 10" stroke="#4A3820" strokeWidth="1.1" fill="none" strokeLinecap="round" />
+      <path d="M100 28 Q100 14 101 6" stroke="#4A3820" strokeWidth="1.0" fill="none" strokeLinecap="round" />
+      <path d="M108 29 Q110 16 112 10" stroke="#4A3820" strokeWidth="1.1" fill="none" strokeLinecap="round" />
+      <path d="M116 32 Q119 20 122 15" stroke="#4A3820" strokeWidth="1.0" fill="none" strokeLinecap="round" />
+      <path d="M128 38 Q132 24 136 18" stroke="#4A3820" strokeWidth="0.9" fill="none" strokeLinecap="round" />
+      
+      {/* Short wispy lashes */}
+      <path d="M65 42 Q62 34 58 28" stroke="#5A4830" strokeWidth="0.7" fill="none" strokeLinecap="round" />
+      <path d="M76 36 Q74 28 71 22" stroke="#5A4830" strokeWidth="0.7" fill="none" strokeLinecap="round" />
+      <path d="M124 36 Q126 28 129 22" stroke="#5A4830" strokeWidth="0.7" fill="none" strokeLinecap="round" />
+      <path d="M135 42 Q138 34 142 28" stroke="#5A4830" strokeWidth="0.7" fill="none" strokeLinecap="round" />
+      
+      {/* Corner lashes - inner */}
+      <path d="M55 50 Q48 42 42 38" stroke="#5A4830" strokeWidth="0.6" fill="none" strokeLinecap="round" />
+      <path d="M48 55 Q42 48 36 44" stroke="#5A4830" strokeWidth="0.5" fill="none" strokeLinecap="round" />
+      
+      {/* Corner lashes - outer (longer, more dramatic) */}
+      <path d="M142 42 Q148 32 155 26" stroke="#3A2A15" strokeWidth="1.0" fill="none" strokeLinecap="round" />
+      <path d="M150 48 Q156 38 164 32" stroke="#3A2A15" strokeWidth="0.9" fill="none" strokeLinecap="round" />
+      <path d="M156 54 Q162 46 170 40" stroke="#4A3820" strokeWidth="0.8" fill="none" strokeLinecap="round" />
+      <path d="M160 58 Q166 52 174 48" stroke="#5A4830" strokeWidth="0.6" fill="none" strokeLinecap="round" />
+    </g>
+
+    {/* ===== LOWER EYELASHES ===== */}
+    <g opacity="0.4" filter={`url(#${id}-paintEdge)`}>
+      <path d="M60 82 Q56 90 52 94" stroke="#5A4830" strokeWidth="0.5" fill="none" strokeLinecap="round" />
+      <path d="M72 90 Q70 98 68 102" stroke="#5A4830" strokeWidth="0.5" fill="none" strokeLinecap="round" />
+      <path d="M84 95 Q83 103 82 108" stroke="#5A4830" strokeWidth="0.5" fill="none" strokeLinecap="round" />
+      <path d="M96 98 Q96 106 95 112" stroke="#5A4830" strokeWidth="0.5" fill="none" strokeLinecap="round" />
+      <path d="M108 98 Q109 106 110 112" stroke="#5A4830" strokeWidth="0.5" fill="none" strokeLinecap="round" />
+      <path d="M120 95 Q122 103 124 108" stroke="#5A4830" strokeWidth="0.5" fill="none" strokeLinecap="round" />
+      <path d="M132 90 Q134 98 136 102" stroke="#5A4830" strokeWidth="0.5" fill="none" strokeLinecap="round" />
+      <path d="M144 82 Q148 90 152 94" stroke="#5A4830" strokeWidth="0.5" fill="none" strokeLinecap="round" />
+    </g>
+
+    {/* Lower eyelid subtle line */}
+    <path
+      d="M30 72 Q65 100 100 102 Q135 100 170 72"
+      stroke="#8B7355" strokeWidth="0.5" fill="none" opacity="0.2"
+    />
+
+    {/* Under-eye skin tone */}
+    <path
+      d="M35 75 Q65 105 100 107 Q135 105 165 75 Q140 95 100 98 Q60 95 35 75z"
+      fill="#D4B896" opacity="0.08"
+    />
+
+    {/* ===== BLINK OVERLAY ===== */}
+    {isBlinking && (
+      <g>
+        <path
+          d="M100 28C60 28 18 65 18 65s42 37 82 37 82-37 82-37S140 28 100 28z"
+          fill={`url(#${id}-skinGrad)`} stroke="#8B7355" strokeWidth="1"
+        />
+        {/* Closed eyelid crease line */}
+        <path
+          d="M25 65 Q62 58 100 56 Q138 58 175 65"
+          stroke="#A08060" strokeWidth="0.8" fill="none" opacity="0.4" strokeLinecap="round"
+        />
+        {/* Lashes along closed lid */}
+        <path d="M80 60 Q78 52 74 46" stroke="#3A2A15" strokeWidth="1.0" fill="none" strokeLinecap="round" opacity="0.6" />
+        <path d="M96 57 Q94 48 92 42" stroke="#3A2A15" strokeWidth="1.1" fill="none" strokeLinecap="round" opacity="0.6" />
+        <path d="M104 57 Q106 48 108 42" stroke="#3A2A15" strokeWidth="1.1" fill="none" strokeLinecap="round" opacity="0.6" />
+        <path d="M120 60 Q122 52 126 46" stroke="#3A2A15" strokeWidth="1.0" fill="none" strokeLinecap="round" opacity="0.6" />
+        <path d="M150 66 Q156 58 164 52" stroke="#3A2A15" strokeWidth="0.9" fill="none" strokeLinecap="round" opacity="0.5" />
+      </g>
     )}
   </svg>
 );
