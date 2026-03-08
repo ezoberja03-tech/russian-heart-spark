@@ -148,6 +148,53 @@ interface FloatingElement {
   durationFloat: number;
 }
 
+// Blinking Eye wrapper component
+const BlinkingEye = ({ element, index }: { element: FloatingElement; index: number }) => {
+  const [isBlinking, setIsBlinking] = useState(false);
+  const blinkIntervalRef = useRef<NodeJS.Timeout | null>(null);
+
+  useEffect(() => {
+    const startBlinking = () => {
+      const randomDelay = 3000 + Math.random() * 4000; // Random delay between 3-7 seconds
+      blinkIntervalRef.current = setTimeout(() => {
+        setIsBlinking(true);
+        setTimeout(() => setIsBlinking(false), 150); // Blink duration 150ms
+        startBlinking(); // Schedule next blink
+      }, randomDelay);
+    };
+    
+    startBlinking();
+    return () => {
+      if (blinkIntervalRef.current) clearTimeout(blinkIntervalRef.current);
+    };
+  }, []);
+
+  const parallaxX = useTransform(springX, [-1, 1], [-20 * element.depth, 20 * element.depth]);
+  const parallaxY = useTransform(springY, [-1, 1], [-15 * element.depth, 15 * element.depth]);
+
+  return (
+    <motion.div
+      className={`absolute ${element.size} ${element.color}`}
+      style={{ left: `${element.baseX}%`, top: `${element.baseY}%`, x: parallaxX, y: parallaxY }}
+      initial={{ opacity: 0, scale: 0.3 }}
+      animate={{
+        opacity: [0, 0.85, 0.7, 0.9, 0.75],
+        scale: [0.3, 1, 0.95, 1.05, 1],
+        rotate: [-element.rotateRange / 2, element.rotateRange / 2, -element.rotateRange / 3, element.rotateRange / 4, 0],
+        y: [0, -12, 0, -8, 0],
+      }}
+      transition={{
+        opacity: { duration: 1.5, delay: element.delay },
+        scale:   { duration: 1.5, delay: element.delay },
+        rotate:  { duration: element.durationFloat, delay: element.delay, repeat: Infinity, ease: "easeInOut" },
+        y:       { duration: element.durationFloat, delay: element.delay, repeat: Infinity, ease: "easeInOut" },
+      }}
+    >
+      <EyeIcon className="w-full h-full" isBlinking={isBlinking} />
+    </motion.div>
+  );
+};
+
 const floatingElements: FloatingElement[] = [
   { Component: EyeIcon,     baseX: 5,  baseY: 8,  size: "w-20 h-12", color: "text-mint",       delay: 0,   depth: 0.8, rotateRange: 8,  durationFloat: 7 },
   { Component: EyeIcon,     baseX: 78, baseY: 12, size: "w-16 h-10", color: "text-olive",      delay: 1.2, depth: 0.5, rotateRange: 6,  durationFloat: 9 },
