@@ -413,12 +413,12 @@ const BlinkingEye = ({ element, index }: { element: FloatingElement; index: numb
 };
 
 const floatingElements: FloatingElement[] = [
-  { Component: EyeIcon,     baseX: 5,  baseY: 8,  size: "w-20 h-12", color: "text-mint",       delay: 0,   depth: 0.8, rotateRange: 8,  durationFloat: 7 },
-  { Component: EyeIcon,     baseX: 78, baseY: 12, size: "w-16 h-10", color: "text-olive",      delay: 1.2, depth: 0.5, rotateRange: 6,  durationFloat: 9 },
-  { Component: EyeIcon,     baseX: 62, baseY: 68, size: "w-24 h-14", color: "text-blush",      delay: 2,   depth: 0.7, rotateRange: 10, durationFloat: 6 },
-  { Component: EyeIcon,     baseX: 12, baseY: 55, size: "w-14 h-8",  color: "text-mint",       delay: 0.5, depth: 0.4, rotateRange: 5,  durationFloat: 11 },
-  { Component: EyeIcon,     baseX: 88, baseY: 45, size: "w-20 h-12", color: "text-olive",      delay: 3,   depth: 0.6, rotateRange: 7,  durationFloat: 8 },
-  { Component: EyeIcon,     baseX: 42, baseY: 85, size: "w-16 h-10", color: "text-blush",      delay: 1.8, depth: 0.3, rotateRange: 4,  durationFloat: 10 },
+  { Component: EyeIcon,     baseX: 5,  baseY: 8,  size: "w-32 h-20", color: "text-mint",       delay: 0,   depth: 0.8, rotateRange: 8,  durationFloat: 7 },
+  { Component: EyeIcon,     baseX: 78, baseY: 12, size: "w-28 h-18", color: "text-olive",      delay: 1.2, depth: 0.5, rotateRange: 6,  durationFloat: 9 },
+  { Component: EyeIcon,     baseX: 62, baseY: 68, size: "w-36 h-22", color: "text-blush",      delay: 2,   depth: 0.7, rotateRange: 10, durationFloat: 6 },
+  { Component: EyeIcon,     baseX: 12, baseY: 55, size: "w-24 h-14", color: "text-mint",       delay: 0.5, depth: 0.4, rotateRange: 5,  durationFloat: 11 },
+  { Component: EyeIcon,     baseX: 88, baseY: 45, size: "w-32 h-20", color: "text-olive",      delay: 3,   depth: 0.6, rotateRange: 7,  durationFloat: 8 },
+  { Component: EyeIcon,     baseX: 42, baseY: 85, size: "w-28 h-18", color: "text-blush",      delay: 1.8, depth: 0.3, rotateRange: 4,  durationFloat: 10 },
   { Component: LeafIcon,    baseX: 91, baseY: 5,  size: "w-10 h-14", color: "text-olive",      delay: 0.8, depth: 0.9, rotateRange: 15, durationFloat: 9 },
   { Component: LeafIcon,    baseX: 3,  baseY: 72, size: "w-8 h-12",  color: "text-mint",       delay: 2.5, depth: 0.5, rotateRange: 20, durationFloat: 7 },
   { Component: LeafIcon,    baseX: 70, baseY: 88, size: "w-10 h-14", color: "text-olive",      delay: 1.2, depth: 0.4, rotateRange: 12, durationFloat: 12 },
