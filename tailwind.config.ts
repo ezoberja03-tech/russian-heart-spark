@@ -110,6 +110,10 @@ export default {
           "50%": { opacity: "0.8" },
           "100%": { opacity: "0.4" },
         },
+        "sheetUp": {
+          from: { transform: "translateY(100%)" },
+          to: { transform: "translateY(0)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -117,6 +121,7 @@ export default {
         "float": "float 6s ease-in-out infinite",
         "float-slow": "float-slow 8s ease-in-out infinite",
         "shimmer": "shimmer 3s ease-in-out infinite",
+        "sheetUp": "sheetUp 0.3s cubic-bezier(.32,.72,0,1)",
       },
     },
   },
