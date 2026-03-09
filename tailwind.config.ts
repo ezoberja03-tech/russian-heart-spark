@@ -110,6 +110,10 @@ export default {
           "50%": { opacity: "0.8" },
           "100%": { opacity: "0.4" },
         },
+        "sheetUp": {
+          from: { transform: "translateY(100%)" },
+          to: { transform: "translateY(0)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
