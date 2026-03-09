@@ -12,8 +12,8 @@ const Index = () => {
         className="w-28 h-28 mb-6 drop-shadow-lg rounded-2xl"
       />
       
-      <h1 className="mb-3 text-3xl font-display font-bold text-foreground tracking-tight">
-        Зрение <span className="text-primary">в фокусе</span>
+      <h1 className="mb-3 text-4xl text-foreground tracking-wide uppercase" style={{ fontFamily: "'Great Vibes', cursive" }}>
+        Зрение <span className="text-primary">В Фокусе</span>
       </h1>
       <p className="text-lg text-muted-foreground font-body max-w-sm text-center leading-relaxed">
         Упражнения для улучшения зрения в акварельном стиле
