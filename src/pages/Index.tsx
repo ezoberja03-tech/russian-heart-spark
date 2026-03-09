@@ -16,10 +16,10 @@ const Index = () => {
   const contentRef = useRef<HTMLDivElement>(null);
 
   const toggleDone = useCallback((id: number) => {
-    setDoneSet(prev => {
+    setDoneSet((prev) => {
       const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
+      if (next.has(id)) next.delete(id);else
+      next.add(id);
       return next;
     });
   }, []);
@@ -35,11 +35,11 @@ const Index = () => {
   }, []);
 
   const completedCount = doneSet.size;
-  const progressPct = Math.round((completedCount / TOTAL) * 100);
+  const progressPct = Math.round(completedCount / TOTAL * 100);
 
   const completeAll = () => {
     const all = new Set<number>();
-    exercises.forEach(e => all.add(e.id));
+    exercises.forEach((e) => all.add(e.id));
     setDoneSet(all);
   };
 
@@ -51,13 +51,13 @@ const Index = () => {
       <div
         ref={contentRef}
         className="flex-1 overflow-y-auto overflow-x-hidden w-full scrollbar-hide"
-        style={{ WebkitOverflowScrolling: 'touch' }}
-      >
+        style={{ WebkitOverflowScrolling: 'touch' }}>
+        
         {/* ═══ PROGRAM TAB ═══ */}
-        {activeTab === 'program' && (
-          <div className="px-3.5 pb-24">
+        {activeTab === 'program' &&
+        <div className="px-3.5 pb-24">
             {/* Header */}
-            <div className="pt-6 pb-5 text-center">
+            <div className="pt-6 pb-5 text-center border-solid border-primary">
               {/* Logo */}
               <div className="w-[76px] h-[76px] mx-auto mb-4 relative">
                 <div className="absolute -inset-1.5 rounded-full border border-dashed border-[hsl(var(--gold)/0.25)] animate-spin" style={{ animationDuration: '24s' }} />
@@ -70,59 +70,59 @@ const Index = () => {
                 Ежедневный ритуал
               </span>
 
-              <h1 className="font-display text-[28px] font-bold leading-tight mb-2 bg-gradient-to-br from-gold-light via-gold to-destructive bg-clip-text text-transparent">
-                Взгляд <em className="italic">&</em> Шея
+              <h1 className="font-display text-[28px] font-bold leading-tight mb-2 bg-gradient-to-br from-gold-light via-gold to-destructive bg-clip-text text-transparent bg-mint">ЗРЕНИЕ В ФОКУСЕ
+              <em className="italic">&</em> Шея
               </h1>
-              <p className="text-xs text-muted-foreground leading-relaxed mb-5 max-w-[290px] mx-auto">
-                Комплекс для глаз, шеи и осанки — каждый день,<br />маленькими шагами к лёгкости
+              <p className="leading-relaxed mb-5 max-w-[290px] mx-auto text-sm font-mono font-medium text-primary">начните свой путь к ясному взгляду
+
+
+
+
+              <br />маленькими шагами к лёгкости
               </p>
 
               {/* Progress */}
               <div className="bg-card/50 rounded-md h-[3px] mb-1.5 overflow-hidden">
-                <div
-                  className="h-full bg-gradient-to-r from-[hsl(var(--gold))] to-gold rounded-md transition-[width] duration-500 ease-out"
-                  style={{ width: `${progressPct}%` }}
-                />
+                <div className="h-full bg-gradient-to-r from-[hsl(var(--gold))] to-gold rounded-md transition-[width] duration-500 ease-out" style={{ width: `${progressPct}%` }} />
+              
               </div>
-              <p className="text-[11px] text-muted-foreground text-right tracking-wide">
+              <p className="text-[11px] text-muted-foreground tracking-wide text-center">
                 {completedCount} / {TOTAL} упражнений
               </p>
             </div>
 
             {/* Exercise sections */}
-            {sections.map((section, si) => (
-              <div key={si}>
+            {sections.map((section, si) => <div key={si}>
                 <div className="flex items-center gap-3 mt-7 mb-3.5 opacity-85">
                   <span className="text-[9px] tracking-[3.5px] uppercase text-[hsl(var(--gold))] font-semibold whitespace-nowrap">
                     {section.label}
                   </span>
                   <span className="flex-1 h-px bg-gradient-to-r from-border to-transparent" />
                 </div>
-                {section.exerciseIds.map(id => {
-                  const ex = exercises[id];
-                  return (
-                    <ExerciseCard
-                      key={id}
-                      exercise={ex}
-                      isDone={doneSet.has(id)}
-                      onToggleDone={() => toggleDone(id)}
-                      onOpenTimer={() => openTimer(id)}
-                    />
-                  );
-                })}
+                {section.exerciseIds.map((id) => {const ex = exercises[id];
+              return (
+                <ExerciseCard
+                  key={id}
+                  exercise={ex}
+                  isDone={doneSet.has(id)}
+                  onToggleDone={() => toggleDone(id)}
+                  onOpenTimer={() => openTimer(id)} />);
+
+
+            })}
               </div>
-            ))}
+          )}
 
             {/* Complete all */}
             <button
-              className="block w-full py-4 mt-6 bg-gradient-to-br from-[hsl(var(--gold)/0.11)] to-[hsl(var(--gold)/0.06)] border border-border rounded-2xl text-[hsl(var(--gold))] text-[15px] font-semibold font-body cursor-pointer transition-all tracking-wide active:from-[hsl(var(--gold)/0.2)]"
-              onClick={completeAll}
-            >
+            className="block w-full py-4 mt-6 bg-gradient-to-br from-[hsl(var(--gold)/0.11)] to-[hsl(var(--gold)/0.06)] border border-border rounded-2xl text-[hsl(var(--gold))] text-[15px] font-semibold font-body cursor-pointer transition-all tracking-wide active:from-[hsl(var(--gold)/0.2)]"
+            onClick={completeAll}>
+            
               ✨ Завершить все
             </button>
 
-            {completedCount === TOTAL && (
-              <div className="text-center py-9 px-6 bg-card border border-border rounded-[20px] mt-5">
+            {completedCount === TOTAL &&
+          <div className="text-center py-9 px-6 bg-card border border-border rounded-[20px] mt-5">
                 <div className="text-[52px] mb-2.5">🎉</div>
                 <h2 className="font-display text-2xl mb-2 bg-gradient-to-br from-gold-light to-gold bg-clip-text text-transparent">
                   Ритуал выполнен!
@@ -131,13 +131,13 @@ const Index = () => {
                   Отличная работа! Каждый день — это вклад<br />в здоровье глаз и шеи.
                 </p>
               </div>
-            )}
+          }
           </div>
-        )}
+        }
 
         {/* ═══ SCHEDULE TAB ═══ */}
-        {activeTab === 'schedule' && (
-          <div className="px-3.5 pb-24">
+        {activeTab === 'schedule' &&
+        <div className="px-3.5 pb-24">
             <div className="pt-7 pb-5 text-center">
               <span className="inline-block text-[9px] tracking-[3.5px] uppercase text-[hsl(var(--gold))] border border-[hsl(var(--gold)/0.28)] px-4 py-1 rounded-full mb-3.5 font-medium">
                 Распорядок дня
@@ -147,20 +147,20 @@ const Index = () => {
               </h2>
             </div>
 
-            {schedule.map((block, i) => (
-              <div key={i} className="bg-card border border-border rounded-[20px] p-5 mb-3">
+            {schedule.map((block, i) =>
+          <div key={i} className="bg-card border border-border rounded-[20px] p-5 mb-3">
                 <div className="text-[9px] tracking-[3px] uppercase text-[hsl(var(--gold))] font-semibold mb-2">
                   {block.time}
                 </div>
                 <h3 className="font-display text-xl mb-3 text-foreground">{block.title}</h3>
                 <ul className="list-none text-[13px] text-muted-foreground leading-[2.1]">
-                  {block.items.map((item, j) => (
-                    <li key={j}><span className="text-[hsl(var(--gold))]">→ </span>{item}</li>
-                  ))}
+                  {block.items.map((item, j) =>
+              <li key={j}><span className="text-[hsl(var(--gold))]">→ </span>{item}</li>
+              )}
                 </ul>
                 <div className="text-xs text-[hsl(var(--gold))] mt-2.5 font-medium">⏱ {block.total}</div>
               </div>
-            ))}
+          )}
 
             {/* Summary */}
             <div className="bg-card border-2 border-border rounded-[20px] p-5">
@@ -177,11 +177,11 @@ const Index = () => {
               </ul>
             </div>
           </div>
-        )}
+        }
 
         {/* ═══ INFO TAB ═══ */}
-        {activeTab === 'info' && (
-          <div className="px-3.5 pb-24">
+        {activeTab === 'info' &&
+        <div className="px-3.5 pb-24">
             <div className="pt-7 pb-5 text-center">
               <span className="inline-block text-[9px] tracking-[3.5px] uppercase text-[hsl(var(--gold))] border border-[hsl(var(--gold)/0.28)] px-4 py-1 rounded-full mb-3.5 font-medium">
                 Наука & Практика
@@ -191,42 +191,42 @@ const Index = () => {
               </h2>
             </div>
 
-            {infoBlocks.map((block, i) => (
-              <div
-                key={i}
-                className={`bg-card border rounded-[20px] p-5 mb-3 ${block.color === 'warning' ? 'border-destructive/20' : 'border-border'}`}
-              >
+            {infoBlocks.map((block, i) =>
+          <div
+            key={i}
+            className={`bg-card border rounded-[20px] p-5 mb-3 ${block.color === 'warning' ? 'border-destructive/20' : 'border-border'}`}>
+            
                 <div className={`text-[9px] tracking-[3px] uppercase font-semibold mb-2 ${block.color === 'warning' ? 'text-destructive' : block.color === 'neck' ? 'text-destructive' : 'text-[hsl(160,50%,45%)]'}`}>
                   {block.label}
                 </div>
                 <h3 className="font-display text-lg mb-3 text-foreground">{block.title}</h3>
                 <p
-                  className="text-[13px] text-muted-foreground leading-[1.85] [&_strong]:text-[hsl(var(--gold))]"
-                  dangerouslySetInnerHTML={{ __html: block.text }}
-                />
+              className="text-[13px] text-muted-foreground leading-[1.85] [&_strong]:text-[hsl(var(--gold))]"
+              dangerouslySetInnerHTML={{ __html: block.text }} />
+            
               </div>
-            ))}
+          )}
           </div>
-        )}
+        }
       </div>
 
       {/* Bottom Nav */}
       <BottomNav activeTab={activeTab} onTabChange={handleTabChange} />
 
       {/* Timer Sheet */}
-      {timerExIdx !== null && (
-        <TimerSheet
-          isOpen={timerOpen}
-          exerciseName={exercises[timerExIdx].name}
-          totalSeconds={exercises[timerExIdx].timerSeconds}
-          onClose={() => setTimerOpen(false)}
-          onComplete={() => {
-            if (timerExIdx !== null) toggleDone(timerExIdx);
-          }}
-        />
-      )}
-    </div>
-  );
+      {timerExIdx !== null &&
+      <TimerSheet
+        isOpen={timerOpen}
+        exerciseName={exercises[timerExIdx].name}
+        totalSeconds={exercises[timerExIdx].timerSeconds}
+        onClose={() => setTimerOpen(false)}
+        onComplete={() => {
+          if (timerExIdx !== null) toggleDone(timerExIdx);
+        }} />
+
+      }
+    </div>);
+
 };
 
 export default Index;
