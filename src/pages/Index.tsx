@@ -16,13 +16,13 @@ const Index = () => {
         Зрение <span className="text-primary">В Фокусе</span>
       </h1>
       <p className="text-lg text-muted-foreground font-body max-w-sm text-center leading-relaxed">
-        Упражнения для улучшения зрения в акварельном стиле
+        Комплекс упражнений для глаз
       </p>
       
       <div className="mt-8 w-full max-w-xs">
         <div className="rounded-2xl border border-border/50 bg-card/60 backdrop-blur-sm p-6 shadow-sm">
           <p className="text-sm text-muted-foreground text-center">
-            ✨ Начните свой путь к здоровому зрению
+            ✨ Начните свой путь к ясному взгляду
           </p>
         </div>
       </div>
