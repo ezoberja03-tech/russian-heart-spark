@@ -29,8 +29,8 @@ const ExerciseCard = ({ exercise, isDone, onToggleDone, onOpenTimer }: ExerciseC
   return (
     <div
       className={cn(
-        'ritual-card relative rounded-[20px] border border-border/50 bg-card/80 backdrop-blur-sm mb-3.5 overflow-hidden transition-all duration-300 cursor-pointer select-none',
-        'shadow-[0_2px_12px_rgba(100,60,20,0.08)]',
+        'ritual-card relative rounded-[20px] border border-border/50 mb-3.5 transition-all duration-300 cursor-pointer select-none',
+        !expanded && 'bg-card/80 backdrop-blur-sm shadow-[0_2px_12px_rgba(100,60,20,0.08)] overflow-hidden',
         expanded && 'border-border shadow-[0_6px_28px_rgba(100,60,20,0.14)]',
         isDone && 'opacity-[0.44]'
       )}
@@ -45,8 +45,33 @@ const ExerciseCard = ({ exercise, isDone, onToggleDone, onOpenTimer }: ExerciseC
         )}
       />
 
+      {/* Photo */}
+      {exercise.photo && (
+        <div className={cn('relative w-full', !expanded && 'overflow-hidden rounded-t-[20px] bg-card/50')}>
+          <img
+            src={exercise.photo}
+            alt={exercise.name}
+            className={cn(
+              'block transition-all duration-300',
+              expanded ? 'mx-auto w-auto' : 'w-full'
+            )}
+            style={{
+              maxHeight: expanded ? '230px' : '210px',
+              objectFit: expanded ? 'contain' : 'cover',
+              objectPosition: 'top',
+            }}
+          />
+          {!expanded && (
+            <div className="absolute bottom-0 left-0 right-0 h-14 bg-gradient-to-t from-white/80 to-transparent pointer-events-none" />
+          )}
+        </div>
+      )}
+
       {/* Body */}
-      <div className="p-4 pb-[18px]">
+      <div className={cn(
+        'p-4 pb-[18px]',
+        expanded && 'bg-card/80 backdrop-blur-sm rounded-[20px] mt-2 shadow-[0_2px_12px_rgba(100,60,20,0.08)]'
+      )}>
         <div className="flex items-start gap-3">
           <span className="text-2xl flex-shrink-0 mt-0.5">{exercise.icon}</span>
           <div className="flex-1 min-w-0">
@@ -95,35 +120,35 @@ const ExerciseCard = ({ exercise, isDone, onToggleDone, onOpenTimer }: ExerciseC
             ✓ {isDone ? 'Выполнено' : 'Готово'}
           </button>
         </div>
+
+        {/* Expanded details */}
+        {expanded && (
+          <div className="pt-4 border-t border-border mt-3">
+            <ol className="list-none space-y-3 counter-reset-steps">
+              {exercise.steps.map((step, i) => (
+                <li key={i} className="flex gap-3 text-[13px] leading-relaxed text-muted-foreground">
+                  <span className="flex-shrink-0 w-[22px] h-[22px] rounded-full bg-card/50 border border-border text-[hsl(var(--gold))] text-[10px] font-bold flex items-center justify-center mt-0.5">
+                    {i + 1}
+                  </span>
+                  <span dangerouslySetInnerHTML={{ __html: step }} className="[&_strong]:text-foreground" />
+                </li>
+              ))}
+            </ol>
+
+            {exercise.note && (
+              <div className="mt-3.5 bg-card/50 border-l-[3px] border-l-destructive rounded-r-[10px] py-3 px-3.5 text-[12.5px] text-muted-foreground leading-relaxed">
+                <strong className="text-destructive">{exercise.note.title}</strong> {exercise.note.text}
+              </div>
+            )}
+
+            {exercise.whyBox && (
+              <div className="mt-3.5 bg-[hsl(var(--gold)/0.06)] border border-[hsl(var(--gold)/0.15)] rounded-xl py-3 px-3.5 text-[12.5px] text-[hsl(var(--gold))] leading-relaxed">
+                <strong className="text-gold-light">{exercise.whyBox.title}</strong> {exercise.whyBox.text}
+              </div>
+            )}
+          </div>
+        )}
       </div>
-
-      {/* Expanded details */}
-      {expanded && (
-        <div className="px-4 pb-[18px] pt-4 border-t border-border">
-          <ol className="list-none space-y-3 counter-reset-steps">
-            {exercise.steps.map((step, i) => (
-              <li key={i} className="flex gap-3 text-[13px] leading-relaxed text-muted-foreground">
-                <span className="flex-shrink-0 w-[22px] h-[22px] rounded-full bg-card/50 border border-border text-[hsl(var(--gold))] text-[10px] font-bold flex items-center justify-center mt-0.5">
-                  {i + 1}
-                </span>
-                <span dangerouslySetInnerHTML={{ __html: step }} className="[&_strong]:text-foreground" />
-              </li>
-            ))}
-          </ol>
-
-          {exercise.note && (
-            <div className="mt-3.5 bg-card/50 border-l-[3px] border-l-destructive rounded-r-[10px] py-3 px-3.5 text-[12.5px] text-muted-foreground leading-relaxed">
-              <strong className="text-destructive">{exercise.note.title}</strong> {exercise.note.text}
-            </div>
-          )}
-
-          {exercise.whyBox && (
-            <div className="mt-3.5 bg-[hsl(var(--gold)/0.06)] border border-[hsl(var(--gold)/0.15)] rounded-xl py-3 px-3.5 text-[12.5px] text-[hsl(var(--gold))] leading-relaxed">
-              <strong className="text-gold-light">{exercise.whyBox.title}</strong> {exercise.whyBox.text}
-            </div>
-          )}
-        </div>
-      )}
     </div>
   );
 };
