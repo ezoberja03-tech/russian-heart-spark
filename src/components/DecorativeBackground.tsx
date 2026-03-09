@@ -465,11 +465,11 @@ const DecorativeBackground = () => {
         className="absolute inset-0"
         style={{
           background: `
-            radial-gradient(ellipse at 15% 20%, hsl(var(--mint-light) / 0.75) 0%, transparent 50%),
-            radial-gradient(ellipse at 85% 15%, hsl(var(--blush-light) / 0.65) 0%, transparent 45%),
-            radial-gradient(ellipse at 50% 80%, hsl(var(--olive-light) / 0.55) 0%, transparent 50%),
-            radial-gradient(ellipse at 80% 70%, hsl(var(--beige-warm) / 0.6) 0%, transparent 45%),
-            radial-gradient(ellipse at 20% 60%, hsl(var(--gold-light) / 0.35) 0%, transparent 40%),
+            radial-gradient(ellipse at 15% 20%, hsl(var(--mint-light) / 0.9) 0%, transparent 50%),
+            radial-gradient(ellipse at 85% 15%, hsl(var(--blush-light) / 0.8) 0%, transparent 45%),
+            radial-gradient(ellipse at 50% 80%, hsl(var(--olive-light) / 0.7) 0%, transparent 50%),
+            radial-gradient(ellipse at 80% 70%, hsl(var(--beige-warm) / 0.75) 0%, transparent 45%),
+            radial-gradient(ellipse at 20% 60%, hsl(var(--gold-light) / 0.5) 0%, transparent 40%),
             hsl(var(--background))
           `,
         }}
