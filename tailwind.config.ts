@@ -121,6 +121,7 @@ export default {
         "float": "float 6s ease-in-out infinite",
         "float-slow": "float-slow 8s ease-in-out infinite",
         "shimmer": "shimmer 3s ease-in-out infinite",
+        "sheetUp": "sheetUp 0.3s cubic-bezier(.32,.72,0,1)",
       },
     },
   },
