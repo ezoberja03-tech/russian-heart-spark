@@ -465,22 +465,22 @@ const DecorativeBackground = () => {
         className="absolute inset-0"
         style={{
           background: `
-            radial-gradient(ellipse at 15% 20%, hsl(var(--mint-light) / 0.75) 0%, transparent 50%),
-            radial-gradient(ellipse at 85% 15%, hsl(var(--blush-light) / 0.65) 0%, transparent 45%),
-            radial-gradient(ellipse at 50% 80%, hsl(var(--olive-light) / 0.55) 0%, transparent 50%),
-            radial-gradient(ellipse at 80% 70%, hsl(var(--beige-warm) / 0.6) 0%, transparent 45%),
-            radial-gradient(ellipse at 20% 60%, hsl(var(--gold-light) / 0.35) 0%, transparent 40%),
+            radial-gradient(ellipse at 15% 20%, hsl(var(--mint-light) / 0.9) 0%, transparent 50%),
+            radial-gradient(ellipse at 85% 15%, hsl(var(--blush-light) / 0.8) 0%, transparent 45%),
+            radial-gradient(ellipse at 50% 80%, hsl(var(--olive-light) / 0.7) 0%, transparent 50%),
+            radial-gradient(ellipse at 80% 70%, hsl(var(--beige-warm) / 0.75) 0%, transparent 45%),
+            radial-gradient(ellipse at 20% 60%, hsl(var(--gold-light) / 0.5) 0%, transparent 40%),
             hsl(var(--background))
           `,
         }}
       />
 
       {/* Soft watercolor blobs */}
-      <div className="absolute top-[8%]  left-[4%]  w-80 h-80 rounded-full bg-mint-light/40  blur-[80px]" />
-      <div className="absolute top-[55%] right-[8%] w-64 h-64 rounded-full bg-blush-light/45  blur-[70px]" />
-      <div className="absolute bottom-[10%] left-[28%] w-72 h-72 rounded-full bg-olive-light/35 blur-[75px]" />
-      <div className="absolute top-[25%] right-[22%] w-56 h-56 rounded-full bg-beige-warm/40  blur-[65px]" />
-      <div className="absolute top-[42%] left-[48%] w-44 h-44 rounded-full bg-gold-light/25   blur-[60px]" />
+      <div className="absolute top-[8%]  left-[4%]  w-80 h-80 rounded-full bg-mint-light/55  blur-[80px]" />
+      <div className="absolute top-[55%] right-[8%] w-64 h-64 rounded-full bg-blush-light/60  blur-[70px]" />
+      <div className="absolute bottom-[10%] left-[28%] w-72 h-72 rounded-full bg-olive-light/50 blur-[75px]" />
+      <div className="absolute top-[25%] right-[22%] w-56 h-56 rounded-full bg-beige-warm/55  blur-[65px]" />
+      <div className="absolute top-[42%] left-[48%] w-44 h-44 rounded-full bg-gold-light/40   blur-[60px]" />
 
       {/* Floating particles */}
       {particles.map((p) => (
