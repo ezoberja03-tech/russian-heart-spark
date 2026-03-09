@@ -87,7 +87,7 @@ const Index = () => {
               
               </div>
               <p className="text-[11px] text-muted-foreground tracking-wide text-center">
-                {completedCount} / {TOTAL} упражнений
+                {TOTAL} упражнений
               </p>
             </div>
 
