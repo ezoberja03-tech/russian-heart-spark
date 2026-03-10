@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
+import { useTier } from '@/contexts/PerformanceTierContext';
 
 interface TimerSheetProps {
   isOpen: boolean;
@@ -14,6 +15,7 @@ const fmt = (s: number) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '
 
 const TimerSheet = ({ isOpen, exerciseName, totalSeconds, onClose, onComplete }: TimerSheetProps) => {
   const [timeLeft, setTimeLeft] = useState(totalSeconds);
+  const { resolvedTier } = useTier();
   const [running, setRunning] = useState(false);
   const [finished, setFinished] = useState(false);
   const intervalRef = useRef<number | null>(null);
@@ -59,7 +61,7 @@ const TimerSheet = ({ isOpen, exerciseName, totalSeconds, onClose, onComplete }:
 
   return (
     <div
-      className="fixed inset-0 bg-[rgba(60,30,10,0.55)] backdrop-blur-[16px] z-[200] flex items-end justify-center"
+      className={`fixed inset-0 z-[200] flex items-end justify-center ${resolvedTier === 'full' ? 'bg-[rgba(60,30,10,0.55)] backdrop-blur-[16px]' : 'bg-black/65'}`}
       onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
     >
       <div className="bg-card border border-border rounded-t-[28px] px-7 pb-7 pt-2.5 w-full max-w-[480px] text-center animate-[sheetUp_0.3s_cubic-bezier(.32,.72,0,1)]">

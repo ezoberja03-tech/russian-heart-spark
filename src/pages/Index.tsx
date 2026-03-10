@@ -5,11 +5,14 @@ import TimerSheet from '@/components/TimerSheet';
 import BottomNav, { TabId } from '@/components/BottomNav';
 import logo from '@/assets/logo.png';
 import { exercises, sections, schedule, infoBlocks } from '@/data/exercises';
+import { useTier } from '@/contexts/PerformanceTierContext';
+import type { PerformancePreference } from '@/hooks/usePerformanceTier';
 
 const TOTAL = exercises.length;
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState<TabId>('program');
+  const { preference, resolvedTier, setPreference, debugInfo } = useTier();
   const [doneSet, setDoneSet] = useState<Set<number>>(new Set());
   const [timerOpen, setTimerOpen] = useState(false);
   const [timerExIdx, setTimerExIdx] = useState<number | null>(null);
@@ -195,7 +198,7 @@ const Index = () => {
           <div
             key={i}
             className={`bg-card border rounded-[20px] p-5 mb-3 ${block.color === 'warning' ? 'border-destructive/20' : 'border-border'}`}>
-            
+
                 <div className={`text-[9px] tracking-[3px] uppercase font-semibold mb-2 ${block.color === 'warning' ? 'text-destructive' : block.color === 'neck' ? 'text-destructive' : 'text-[hsl(160,50%,45%)]'}`}>
                   {block.label}
                 </div>
@@ -203,9 +206,52 @@ const Index = () => {
                 <p
               className="text-[13px] text-muted-foreground leading-[1.85] [&_strong]:text-[hsl(var(--gold))]"
               dangerouslySetInnerHTML={{ __html: block.text }} />
-            
+
               </div>
           )}
+
+            {/* Performance mode settings */}
+            <div className="bg-card border border-border rounded-[20px] p-5 mb-3 mt-2">
+              <div className="text-[9px] tracking-[3px] uppercase text-[hsl(var(--gold))] font-semibold mb-3">
+                Режим отображения
+              </div>
+              <div className="flex gap-2 mb-3">
+                {([['auto', '🤖 Авто'], ['full', '✨ Полный'], ['lite', '⚡ Экономный']] as [PerformancePreference, string][]).map(([p, label]) => (
+                  <button
+                    key={p}
+                    onClick={() => setPreference(p)}
+                    className={`flex-1 py-2 px-1 rounded-xl text-[12px] font-semibold font-body border transition-all ${
+                      preference === p
+                        ? 'bg-[hsl(var(--gold))] text-[#1C1208] border-[hsl(var(--gold))]'
+                        : 'bg-card/50 border-border text-muted-foreground'
+                    }`}
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
+              <p className="text-[11.5px] text-muted-foreground leading-relaxed">
+                {preference === 'auto'
+                  ? `Авто: ${resolvedTier === 'full' ? 'FULL' : 'LITE'} (счёт ${debugInfo.score}/${debugInfo.score < 0 ? '' : ''})`
+                  : preference === 'full'
+                  ? 'Принудительно: полный режим'
+                  : 'Принудительно: экономный режим'}
+              </p>
+              <details className="mt-2">
+                <summary className="text-[11px] text-muted-foreground/60 cursor-pointer select-none">
+                  Подробности детекции
+                </summary>
+                <div className="mt-2 text-[11px] text-muted-foreground/70 space-y-0.5 font-mono">
+                  <div>hardwareConcurrency: {debugInfo.hardwareConcurrency ?? '—'}</div>
+                  <div>deviceMemory: {debugInfo.deviceMemory ?? '—'} GB</div>
+                  <div>devicePixelRatio: {debugInfo.devicePixelRatio}</div>
+                  <div>reducedMotion: {String(debugInfo.reducedMotion)}</div>
+                  <div>coarsePointer: {String(debugInfo.coarsePointer)}</div>
+                  <div>iOS: {String(debugInfo.isIOS)}</div>
+                  <div className="mt-1 font-semibold text-foreground/60">итого: {debugInfo.score} → {resolvedTier.toUpperCase()}</div>
+                </div>
+              </details>
+            </div>
           </div>
         }
       </div>

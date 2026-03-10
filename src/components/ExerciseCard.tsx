@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Exercise } from '@/data/exercises';
 import { cn } from '@/lib/utils';
+import { useTier } from '@/contexts/PerformanceTierContext';
 
 interface ExerciseCardProps {
   exercise: Exercise;
@@ -25,12 +26,13 @@ const stripeBg: Record<string, string> = {
 
 const ExerciseCard = ({ exercise, isDone, onToggleDone, onOpenTimer }: ExerciseCardProps) => {
   const [expanded, setExpanded] = useState(false);
+  const { resolvedTier } = useTier();
 
   return (
     <div
       className={cn(
         'ritual-card relative rounded-[20px] border border-border/50 mb-3.5 transition-all duration-300 cursor-pointer select-none',
-        !expanded && 'bg-card/80 backdrop-blur-sm shadow-[0_2px_12px_rgba(100,60,20,0.08)] overflow-hidden',
+        !expanded && (resolvedTier === 'full' ? 'bg-card/80 backdrop-blur-sm' : 'bg-card/90') + ' shadow-[0_2px_12px_rgba(100,60,20,0.08)] overflow-hidden',
         expanded && 'border-border shadow-[0_6px_28px_rgba(100,60,20,0.14)]',
         isDone && 'opacity-[0.44]'
       )}
@@ -70,7 +72,7 @@ const ExerciseCard = ({ exercise, isDone, onToggleDone, onOpenTimer }: ExerciseC
       {/* Body */}
       <div className={cn(
         'p-4 pb-[18px]',
-        expanded && 'bg-card/80 backdrop-blur-sm rounded-[20px] mt-2 shadow-[0_2px_12px_rgba(100,60,20,0.08)]'
+        expanded && (resolvedTier === 'full' ? 'bg-card/80 backdrop-blur-sm' : 'bg-card/90') + ' rounded-[20px] mt-2 shadow-[0_2px_12px_rgba(100,60,20,0.08)]'
       )}>
         <div className="flex items-start gap-3">
           <span className="text-2xl flex-shrink-0 mt-0.5">{exercise.icon}</span>
