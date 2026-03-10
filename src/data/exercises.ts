@@ -24,7 +24,7 @@ export const exercises: Exercise[] = [
     name: 'Пальминг',
     icon: '🤲',
     brief: 'Расслабление глаз в темноте ладоней',
-    photo: '/images/photo-01-palming.png',
+    photo: `${import.meta.env.BASE_URL}images/photo-01-palming.png`,
     type: 'eye',
     timerSeconds: 180,
     tags: [
@@ -46,7 +46,7 @@ export const exercises: Exercise[] = [
     name: 'Восьмёрка + круги',
     icon: '♾️',
     brief: 'Глазная гимнастика для подвижности',
-    photo: '/images/photo-02-figure8.png',
+    photo: '`${import.meta.env.BASE_URL}images/photo-02-figure8.png',
     type: 'eye',
     timerSeconds: 120,
     tags: [
@@ -67,7 +67,7 @@ export const exercises: Exercise[] = [
     name: 'Фокус ближе-дальше',
     icon: '🔍',
     brief: 'Тренировка аккомодации — ближний и дальний фокус',
-    photo: '/images/photo-03-focus.png',
+    photo: '`${import.meta.env.BASE_URL}images/photo-03-focus.png',
     type: 'eye',
     timerSeconds: 120,
     tags: [
@@ -88,7 +88,7 @@ export const exercises: Exercise[] = [
     name: 'Левая шея — растяжка',
     icon: '🦢',
     brief: 'Целевая проработка левой стороны шеи и трапеции',
-    photo: '/images/photo-04-neck-left.png',
+    photo: '`${import.meta.env.BASE_URL}images/photo-04-neck-left.png',
     type: 'neck',
     timerSeconds: 180,
     tags: [
@@ -107,7 +107,7 @@ export const exercises: Exercise[] = [
     name: 'Изометрия шеи',
     icon: '💪',
     brief: 'Укрепление глубоких мышц шеи без движения',
-    photo: '/images/photo-05-isometric.png',
+    photo: '`${import.meta.env.BASE_URL}images/photo-05-isometric.png',
     type: 'neck',
     timerSeconds: 90,
     tags: [
@@ -128,7 +128,7 @@ export const exercises: Exercise[] = [
     name: 'Правило 20-20-20',
     icon: '⏱️',
     brief: 'Микропауза: каждые 20 мин — 20 сек вдаль',
-    photo: '/images/photo-06-20-20-20.png',
+    photo: '`${import.meta.env.BASE_URL}images/photo-06-20-20-20.png',
     type: 'eye',
     timerSeconds: 20,
     tags: [
@@ -149,7 +149,7 @@ export const exercises: Exercise[] = [
     name: 'Грудь + плечо',
     icon: '🏋️',
     brief: 'Растяжка грудного отдела и левого плеча',
-    photo: '/images/photo-07-chest.png',
+    photo: '`${import.meta.env.BASE_URL}images/photo-07-chest.png',
     type: 'neck',
     timerSeconds: 180,
     tags: [
@@ -168,7 +168,7 @@ export const exercises: Exercise[] = [
     name: 'Прогулка / взгляд вдаль',
     icon: '🌳',
     brief: '15 мин на улице — свет + дальний фокус',
-    photo: '/images/photo-08-nature.png',
+    photo: '`${import.meta.env.BASE_URL}images/photo-08-nature.png',
     type: 'combo',
     timerSeconds: 900,
     tags: [
@@ -188,7 +188,7 @@ export const exercises: Exercise[] = [
     name: 'МФР шеи — самомассаж',
     icon: '🖐️',
     brief: 'Миофасциальный релиз триггерных точек',
-    photo: '/images/photo-09-mfr.png',
+    photo: '`${import.meta.env.BASE_URL}images/photo-09-mfr.png',
     type: 'neck',
     timerSeconds: 300,
     tags: [
@@ -207,7 +207,7 @@ export const exercises: Exercise[] = [
     name: 'Увлажнение глаз',
     icon: '💧',
     brief: 'Осознанное моргание + капли при необходимости',
-    photo: '/images/photo-10-drops.png',
+    photo: '`${import.meta.env.BASE_URL}images/photo-10-drops.png',
     type: 'eye',
     timerSeconds: 120,
     tags: [
@@ -226,7 +226,7 @@ export const exercises: Exercise[] = [
     name: 'Дыхание + шея',
     icon: '🫁',
     brief: 'Диафрагмальное дыхание с расслаблением шеи',
-    photo: '/images/photo-11-breathing.png',
+    photo: '`${import.meta.env.BASE_URL}images/photo-11-breathing.png',
     type: 'combo',
     timerSeconds: 300,
     tags: [
@@ -247,7 +247,7 @@ export const exercises: Exercise[] = [
     name: 'Итоговый пальминг',
     icon: '🌙',
     brief: 'Финальное расслабление перед сном',
-    photo: '/images/photo-12-final-palming.png',
+    photo: '`${import.meta.env.BASE_URL}images/photo-12-final-palming.png',
     type: 'eye',
     timerSeconds: 180,
     tags: [
