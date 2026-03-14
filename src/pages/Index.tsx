@@ -260,28 +260,29 @@ const Index = () => {
 
       {/* Timer Sheet */}
       {timerExIdx !== null &&
-      <TimerSheet
-        isOpen={timerOpen}
-        exerciseName={exercises[timerExIdx].name}
-        totalSeconds={exercises[timerExIdx].timerSeconds}
-        onClose={() => setTimerOpen(false)}
-        onComplete={() => {
-          if (timerExIdx !== null) toggleDone(timerExIdx);
-        }} />
-
-        };
-{/* Disclaimer */}
-<div className="mt-12 px-4 py-4 border border-yellow-500/30 rounded-lg bg-yellow-500/5 max-w-2xl mx-auto text-center">
-  <p className="text-sm text-muted-foreground">
-    <span className="font-medium text-yellow-600 dark:text-yellow-400">⚠️ Важно</span>
-    <br />
-    Материалы носят исключительно информационный характер и не являются медицинской рекомендацией. Перед выполнением упражнений проконсультируйтесь с офтальмологом.
-  </p>
-</div>
-      
+        <TimerSheet
+          isOpen={timerOpen}
+          exerciseName={exercises[timerExIdx].name}
+          totalSeconds={exercises[timerExIdx].timerSeconds}
+          onClose={() => setTimerOpen(false)}
+          onComplete={() => {
+            if (timerExIdx !== null) toggleDone(timerExIdx);
+          }} />
       }
-    </div>);
 
+      {/* Disclaimer */}
+      <div className="px-4 py-3 border-t border-border text-center">
+        <p className="text-[11px] text-muted-foreground leading-relaxed">
+          <span className="text-destructive font-medium">⚠️ Важно</span>
+          {' '}Материалы носят исключительно информационный характер и не являются медицинской рекомендацией. Перед выполнением упражнений проконсультируйтесь с офтальмологом.
+        </p>
+      </div>
+
+    </div>
+  );
+};
+
+export default Index;
 
 
 export default Index;
