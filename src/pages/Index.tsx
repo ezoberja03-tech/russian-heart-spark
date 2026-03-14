@@ -273,5 +273,13 @@ const Index = () => {
     </div>);
 
 };
+{/* Disclaimer */}
+<div className="mt-12 px-4 py-4 border border-yellow-500/30 rounded-lg bg-yellow-500/5 max-w-2xl mx-auto text-center">
+  <p className="text-sm text-muted-foreground">
+    <span className="font-medium text-yellow-600 dark:text-yellow-400">⚠️ Важно</span>
+    <br />
+    Материалы носят исключительно информационный характер и не являются медицинской рекомендацией. Перед выполнением упражнений проконсультируйтесь с офтальмологом.
+  </p>
+</div>
 
 export default Index;
