@@ -74,7 +74,6 @@ const Index = () => {
               </span>
 
               <h1 className="font-display text-[28px] font-bold leading-tight mb-2 bg-gradient-to-br from-gold-light via-gold to-destructive bg-clip-text text-transparent bg-mint">ЗРЕНИЕ В ФОКУСЕ
-              <em className="italic">&</em> Шея
               </h1>
               <p className="leading-relaxed mb-5 max-w-[290px] mx-auto text-sm font-mono font-medium text-primary">комплекс упражнений для глаз
 
