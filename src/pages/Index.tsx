@@ -269,10 +269,7 @@ const Index = () => {
           if (timerExIdx !== null) toggleDone(timerExIdx);
         }} />
 
-      }
-    </div>);
-
-};
+        };
 {/* Disclaimer */}
 <div className="mt-12 px-4 py-4 border border-yellow-500/30 rounded-lg bg-yellow-500/5 max-w-2xl mx-auto text-center">
   <p className="text-sm text-muted-foreground">
@@ -281,5 +278,10 @@ const Index = () => {
     Материалы носят исключительно информационный характер и не являются медицинской рекомендацией. Перед выполнением упражнений проконсультируйтесь с офтальмологом.
   </p>
 </div>
+      
+      }
+    </div>);
+
+
 
 export default Index;
